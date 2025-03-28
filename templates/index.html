@@ -9,20 +9,26 @@
   <input type="file" id="fileInput">
   <button onclick="uploadFile()">Загрузить</button>
   <br><br>
+
   <canvas id="imageCanvas"></canvas>
   <br>
   <button onclick="rotate(-90)">Повернуть ⬅️</button>
   <button onclick="rotate(90)">Повернуть ➡️</button>
   <button onclick="recognize()">Распознать</button>
   <br><br>
+
   <div id="status"></div>
-  <div id="download"></div>
+
+  <!-- 👇 КНОПКИ СКАЧИВАНИЯ -->
+  <div id="download" style="margin-top: 10px; display: none;">
+    <a id="dl_txt" href="#" download>📄 Скачать .txt</a><br>
+    <a id="dl_csv" href="#" download>📄 Скачать .csv</a><br>
+    <a id="dl_xlsx" href="#" download>📄 Скачать .xlsx</a>
+  </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="/static/script.js"></script>
-  <img id="previewImage" style="max-width: 300px; border: 1px solid #ccc;" />
-  <canvas id="imageCanvas"></canvas>
-  <img id="previewImage" />
 
+  <img id="previewImage" style="max-width: 300px; border: 1px solid #ccc;" />
 </body>
 </html>

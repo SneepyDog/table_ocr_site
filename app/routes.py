@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, request, send_file, jsonify, current_app
+from flask import Blueprint, render_template, request, send_file, jsonify, current_app, send_from_directory
 import os
 import uuid
 from .utils.pdf_utils import convert_pdf_to_png
 from .utils.image_utils import process_image_crop_rotate
 from .utils.layout_utils import detect_tables
-from .utils.ocr_utils import extract_text_within_boxes
+from .utils.ocr_utils import extract_text_within_boxes, save_results
+import layoutparser as lp
 
 main = Blueprint("main", __name__)
 
@@ -53,17 +54,31 @@ def process():
     process_image_crop_rotate(img_path, processed_path, crop, rotate)
 
     tables = detect_tables(processed_path)
-    result_text = extract_text_within_boxes(processed_path, tables)
 
-    result_file = os.path.join(upload_folder, f"{filename}.txt")
-    with open(result_file, "w", encoding="utf-8") as f:
-        f.write(result_text)
+    # Валидация координат таблиц (исправляем перевёрнутые прямоугольники)
+    validated_tables = []
+    for box in tables:
+        x1 = min(box.x_1, box.x_2)
+        x2 = max(box.x_1, box.x_2)
+        y1 = min(box.y_1, box.y_2)
+        y2 = max(box.y_1, box.y_2)
+        validated_tables.append(lp.Rectangle(x1, y1, x2, y2))
 
-    return jsonify({"result_file": f"{filename}.txt"})
+    result_text = extract_text_within_boxes(processed_path, validated_tables)
+
+    # Убираем .png или .jpg из имени файла, чтобы сохранять .txt/.csv/.xlsx чисто
+    base_filename = os.path.splitext(filename)[0]
+    result_files = save_results(result_text, upload_folder, base_filename)
+
+    return jsonify({"result_files": result_files})
 
 @main.route("/download/<path:filename>")
 def download(filename):
-    return send_file(os.path.join(current_app.config['UPLOAD_FOLDER'], filename), as_attachment=True)
+    return send_from_directory(
+        directory=current_app.config['UPLOAD_FOLDER'],
+        filename=filename,
+        as_attachment=True
+    )
 
 @main.route('/uploads/<filename>')
 def uploaded_file(filename):

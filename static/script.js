@@ -34,7 +34,11 @@ function drawOriginal() {
     canvas.width = img.width;
     canvas.height = img.height;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0);
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate((rotation * Math.PI) / 180);
+    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+    ctx.restore();
   };
   img.src = `${window.location.origin}/uploads/${uploadedFile}`;
 }
@@ -61,8 +65,23 @@ function recognize() {
       rotate: rotation
     }),
     success: function (res) {
-      $("#status").text("✅ Готово!");
-      $("#download").html(`<a href="/download/${res.result_file}" download>Скачать результат</a>`);
+        $("#status").text("✅ Готово!");
+        $("#download").show();
+      
+        $("#dl_txt")
+          .attr("href", `/download/${res.result_files.txt}`)
+          .attr("download", res.result_files.txt);
+      
+        $("#dl_csv")
+          .attr("href", `/download/${res.result_files.csv}`)
+          .attr("download", res.result_files.csv);
+      
+        $("#dl_xlsx")
+          .attr("href", `/download/${res.result_files.xlsx}`)
+          .attr("download", res.result_files.xlsx);
+      },
+    error: function () {
+      $("#status").text("❌ Ошибка при распознавании.");
     }
   });
 }

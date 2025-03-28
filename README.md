@@ -1,3 +1,5 @@
+Не работает :(
+
 ## === README.md ===
 
 # Table OCR App

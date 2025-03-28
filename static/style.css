@@ -1,0 +1,23 @@
+body {
+    font-family: sans-serif;
+    padding: 20px;
+  }
+  canvas {
+    border: 1px solid #aaa;
+    max-width: 100%;
+    display: block;
+    margin-top: 10px;
+  }
+  button {
+    margin: 5px;
+    padding: 8px 16px;
+  }
+  img#previewImage {
+    display: block;
+    margin-top: 10px;
+    max-width: 300px;
+    border: 1px solid #ccc;
+  }
+  #imageCanvas {
+    cursor: crosshair;
+  }

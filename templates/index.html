@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Распознавание Таблиц</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>Распознавание Таблицы</h1>
+  <input type="file" id="fileInput">
+  <button onclick="uploadFile()">Загрузить</button>
+  <br><br>
+  <canvas id="imageCanvas"></canvas>
+  <br>
+  <button onclick="rotate(-90)">Повернуть ⬅️</button>
+  <button onclick="rotate(90)">Повернуть ➡️</button>
+  <button onclick="recognize()">Распознать</button>
+  <br><br>
+  <div id="status"></div>
+  <div id="download"></div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/static/script.js"></script>
+  <img id="previewImage" style="max-width: 300px; border: 1px solid #ccc;" />
+  <canvas id="imageCanvas"></canvas>
+  <img id="previewImage" />
+
+</body>
+</html>

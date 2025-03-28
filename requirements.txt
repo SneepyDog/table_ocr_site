@@ -1,0 +1,9 @@
+Flask
+pytesseract
+pdf2image
+layoutparser
+opencv-python
+Pillow
+numpy
+torch
+detectron2 @ https://github.com/facebookresearch/detectron2/archive/refs/heads/main.zip
